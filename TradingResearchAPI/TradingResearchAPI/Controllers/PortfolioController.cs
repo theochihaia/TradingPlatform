@@ -12,11 +12,11 @@ namespace TradingResearchAPI.Controllers
     public class PortfolioController : Controller
     {
         // GET api/values
-        [HttpGet]
-        public List<Trade> GetPortfolio()
+        [HttpGet("{user}")]
+        public List<Trade> GetPortfolio(string user)
         {
             PortfolioManager portfolioManager = new PortfolioManager();
-            var portfolio = portfolioManager.GetCurrentPortfolio("theo");
+            var portfolio = portfolioManager.GetCurrentPortfolio(user);
 
             return portfolio;
         }
@@ -28,12 +28,6 @@ namespace TradingResearchAPI.Controllers
         {
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         // POST api/values
         [HttpPost("tradeorder")]
