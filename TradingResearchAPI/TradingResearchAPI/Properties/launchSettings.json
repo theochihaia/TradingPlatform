@@ -19,7 +19,7 @@
     "TradingResearchAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/stocks/details/CMG",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -1,0 +1,37 @@
+﻿
+
+User should log in, with login credentials you would be able to get list of portfolios
+
+
+[Controllers]
+Portfolio Controller
+    - GetPortfolioDetails(guid? portfolioGUID) // details for portfolio
+        + Portfolio[guid, name, list<symbols>]
+    - GetPortfolios // gets all portfolios
+        + [portfolioGUID, PortfolioName]
+    - CreatePortfolio(createPortfolioRequest request)
+        + Portfolio[name, list<symbols>]
+    - UpdatePortfolio(UpdatePortfolioRequest request)
+    - GetTradeRecommendations(guid portfolioGuid, list<enum algorithm>) // apply algorithms to portfolio
+        + List<enum algorithm>, List<TradeRecommendation>
+            [symbol, recommendation, currentPrice, purchaseRecommentation, sellRecommendation, percentReturnPotential]
+      
+
+
+Stock Controller
+    - GetStockData(List<symbol>, date? startDate, date? endDate)
+        + Dictionary<symbol, List<CandleSticks>()
+
+
+
+Simulation Controller
+    -
+    -
+
+[Managers]
+
+
+------------------------------------------------
+Questions:
+Should CreatePortfolio(createPortfolioRequest request) have a list<trade>
+    - not yet, goal is to get list of trade recommendations not manage a real portfolio
