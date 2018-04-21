@@ -23,6 +23,15 @@ namespace TradingResearchAPI.Controllers
             return portfolios;
         }
 
+        [HttpGet("create")]
+        public Guid CreatePortfolio([FromBody]Portfolio.CreateRequest request)
+        {
+            PortfolioManager portfolioManager = new PortfolioManager();
+            Guid portfolioGuid = portfolioManager.CreatePortfolio(request);
+
+            return portfolioGuid;
+        }
+
         [HttpPut("{portfolioGuid}/update")]
         public void UpdatePortfolio(Guid portfolioGuid, [FromBody]Portfolio.UpdateRequest request){
 

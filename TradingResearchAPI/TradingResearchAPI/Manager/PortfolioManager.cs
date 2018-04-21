@@ -25,6 +25,14 @@ namespace TradingResearchAPI.Manager
             return portfolios;
         }
 
+        public Guid CreatePortfolio(Portfolio.CreateRequest request)
+        {
+            Guid portfolioGuid = _portfolioDao.CreatePortfolio(request);
+
+            return Guid.Empty;
+        }
+
+
         public void UpdatePortfolio(Guid portfolioGuid, Portfolio.UpdateRequest request)
         {
             _portfolioDao.UpdatePortfolio(portfolioGuid, request);
