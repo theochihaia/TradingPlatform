@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TradingResearchAPI.Enums;
+using YahooFinanceApi;
 
 namespace TradingResearchAPI.Models
 {
@@ -8,10 +9,11 @@ namespace TradingResearchAPI.Models
     {
         public string Symbol { get; set; }
         public TradeAction TradeAction { get; set; }
+        public String TradeActionDescription { get; set; }
         public double PurchaseRecommendation { get; set; }
         public double SellRecommendation { get; set; }
         public double percentReturnPotential { get; set; }
-        public TradingSession MostRecentTradingSession { get; set; }
+        public Candle MostRecentTradingSession { get; set; }
 
 
         public class GetRequest{

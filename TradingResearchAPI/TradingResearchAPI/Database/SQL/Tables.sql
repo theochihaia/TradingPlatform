@@ -33,7 +33,8 @@ CREATE TABLE TradingSession(
 */
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'UserAccount')
 CREATE TABLE UserAccount(
-	UserAccountID INT PRIMARY KEY IDENTITY(1,1)
+	UserID INT PRIMARY KEY IDENTITY(1,1)
+	,UserGUID UNIQUEIDENTIFIER
 	,UserName VARCHAR(50)
 	,UserPassword VARCHAR(50)
 )
@@ -44,8 +45,10 @@ CREATE TABLE UserAccount(
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Portfolio')
 CREATE TABLE Portfolio(
 	PortfolioID INT PRIMARY KEY IDENTITY(1,1)
-	,PortfolioName VARCHAR(50)
-	,UserAccountID INT FOREIGN KEY REFERENCES UserAccount(UserAccountID)
+	,PortfolioGUID UNIQUEIDENTIFIER
+	,PortfolioName VARCHAR(255)
+	,Symbols VARCHAR(255)
+	,UserID INT FOREIGN KEY REFERENCES UserAccount(UserID)
 )
 
 /*
@@ -71,3 +74,8 @@ CREATE TABLE Trade(
 	,TradePrice MONEY
 	,NumberOfShares INT
 )
+
+
+drop table PortfolioConfig
+drop table Portfolio
+drop table UserAccount

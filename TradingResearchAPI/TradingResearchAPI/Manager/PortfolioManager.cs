@@ -12,10 +12,19 @@ namespace TradingResearchAPI.Manager
     public class PortfolioManager
     {
         PortfolioDAO _portfolioDao;
+        String[] symbols;
 
         public PortfolioManager()
         {
             _portfolioDao = new PortfolioDAO();
+            symbols = new String[]{
+                "vod"
+                ,"fslr"
+                ,"ge"
+                ,"cqqq"
+                ,"hyem"
+            };
+
 
         }
 
@@ -42,6 +51,25 @@ namespace TradingResearchAPI.Manager
         {
             // should call trade recommendation manager
             throw new NotImplementedException();
+        }
+
+        public List<TradeRecommendation> GetDefaultDashboard()
+        {
+            StockManger sm = new StockManger();
+            TradeRecommendationManager trm = new TradeRecommendationManager();
+            List<TradeRecommendation> recommendations = new List<TradeRecommendation>();
+
+            foreach(String sym in symbols)
+            {
+                // Get stock data
+                IReadOnlyList<Candle> tradeData = sm.GetStockDetails(sym).Result;
+
+                // Determin Trade Recommendation
+                recommendations.Add(trm.GetTradeRecommendation(sym, tradeData));
+
+            }
+
+            return recommendations;
         }
     }
 }

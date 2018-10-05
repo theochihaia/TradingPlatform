@@ -8,7 +8,8 @@ namespace TradingResearchAPI.Enums
     public enum TradeAction
     {
         Buy,
-        Sell,
-        Hold
+        Hold,
+        Sell
+        
     }
 }
