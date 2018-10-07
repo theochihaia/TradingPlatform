@@ -25,7 +25,6 @@ namespace TradingResearchAPI.Manager
                 ,"hyem"
             };
 
-
         }
 
         public List<Portfolio> GetPortfolios(Portfolio.GetRequest request)
@@ -68,6 +67,8 @@ namespace TradingResearchAPI.Manager
                 recommendations.Add(trm.GetTradeRecommendation(sym, tradeData));
 
             }
+
+            recommendations.OrderBy(o => o.TradeAction);
 
             return recommendations;
         }
