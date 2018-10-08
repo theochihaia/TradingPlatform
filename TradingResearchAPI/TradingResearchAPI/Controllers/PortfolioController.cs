@@ -47,16 +47,15 @@ namespace TradingResearchAPI.Controllers
             return recommendations;
         }
 
-        // [DELETE PORTFOLIO]
-
         [HttpGet("dashboard")]
         public List<TradeRecommendation> GetDefaultDashboard()
         {
             PortfolioManager portfolioManager = new PortfolioManager();
-            List<TradeRecommendation> recommendations = portfolioManager.GetDefaultDashboard();
+            List<TradeRecommendation> recommendations = portfolioManager.GetDefaultDashboard().Result;
             return recommendations;
         }
 
+        // TODO: [DELETE PORTFOLIO]
 
     }
 }

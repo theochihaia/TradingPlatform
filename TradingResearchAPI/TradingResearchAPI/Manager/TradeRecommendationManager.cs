@@ -41,7 +41,7 @@ namespace TradingResearchAPI.Manager
             decimal stdDev = (decimal) CalculateStandardDeviation(list.Select(c => c.Close));
 
             // Populate Output
-            recommendation.MostRecentTradingSession = list.First();
+            //recommendation.MostRecentTradingSession = list.First();
             recommendation.PurchaseRecommendation = (list.First().Low - stdDev * setting.LowerStdDevLimit);
             recommendation.SellRecommendation = (list.First().High + stdDev * setting.UpperStdDevLimit);
 

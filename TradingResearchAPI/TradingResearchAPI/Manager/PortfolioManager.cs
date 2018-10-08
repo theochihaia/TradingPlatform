@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TradingResearchAPI.Database.DataAccess;
@@ -12,18 +14,17 @@ namespace TradingResearchAPI.Manager
     public class PortfolioManager
     {
         PortfolioDAO _portfolioDao;
+        StockManger _stockManager = new StockManger();
+        TradeRecommendationManager _tradeRecommendationManager = new TradeRecommendationManager();
         String[] symbols;
 
         public PortfolioManager()
         {
             _portfolioDao = new PortfolioDAO();
-            symbols = new String[]{
-                "vod"
-                ,"fslr"
-                ,"ge"
-                ,"cqqq"
-                ,"hyem"
-            };
+
+            TextReader tr = new StreamReader(@"Requirements/StockSymbols.txt");
+            string stockSymbolsToParse = tr.ReadLine();
+            symbols = stockSymbolsToParse.Split(',');
 
         }
 
@@ -52,25 +53,46 @@ namespace TradingResearchAPI.Manager
             throw new NotImplementedException();
         }
 
-        public List<TradeRecommendation> GetDefaultDashboard()
+        public async Task<List<TradeRecommendation>> GetDefaultDashboard()
         {
-            StockManger sm = new StockManger();
-            TradeRecommendationManager trm = new TradeRecommendationManager();
             List<TradeRecommendation> recommendations = new List<TradeRecommendation>();
 
-            foreach(String sym in symbols)
+            List<Task<TradeRecommendation>> tasks = new List<Task<TradeRecommendation>>();
+
+            foreach (String sym in symbols)
             {
                 // Get stock data
-                IReadOnlyList<Candle> tradeData = sm.GetStockDetails(sym).Result;
-
-                // Determin Trade Recommendation
-                recommendations.Add(trm.GetTradeRecommendation(sym, tradeData));
-
+                tasks.Add(ProcessTradeRecommendation(sym));
             }
 
-            recommendations.OrderBy(o => o.TradeAction);
+            var results = await Task.WhenAll(tasks);
 
-            return recommendations;
+            // TODO: Handle null Trade Recommendations
+            results.OrderBy(o => o?.TradeAction);
+
+            return results.ToList();
+        }
+
+        private Task<TradeRecommendation> ProcessTradeRecommendation(String sym)
+        {
+            try
+            {
+                return Task.Run(() =>
+                {
+                    var candles = _stockManager.GetStockDetails(sym);
+
+                    return _tradeRecommendationManager.GetTradeRecommendation(sym, candles.Result);
+                });
+
+            }
+            catch(Exception e)
+            {
+                // TODO: Implement Logger
+                Console.WriteLine($@"Exception Getting trade recommendation for: {sym}
+                    Exception Message: {e.Message}");
+            }
+
+            return null;
         }
     }
 }

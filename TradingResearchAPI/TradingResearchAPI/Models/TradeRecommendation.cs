@@ -13,9 +13,10 @@ namespace TradingResearchAPI.Models
         public decimal PurchaseRecommendation { get; set; }
         public decimal SellRecommendation { get; set; }
         public decimal percentReturnPotential { get; set; }
-        public Candle MostRecentTradingSession { get; set; }
+        //public Candle MostRecentTradingSession { get; set; }
 
 
+        // TODO: Use this for algorithm settings
         public class GetRequest{
             public Dictionary<TradeAlgorithm, TradeAlgorithmConfiguration> algorithms { get; set; }
 
